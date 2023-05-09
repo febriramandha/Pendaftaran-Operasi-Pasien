@@ -4,8 +4,16 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title><?= $this->title; ?> | Sistem Informasi Pengembangan Kompetensi Kabupaten Agam</title>
-    <link rel="shortcut icon" href="<?= base_url('assets/AdminLTE/'); ?>dist/img//logo/agam.png" type="image/x-icon">
+    <title><?= $this->title; ?> | Pendaftaran Operasi RSUD Achmad Darwis</title>
+    <link rel="shortcut icon" href="<?= base_url('assets/AdminLTE/'); ?>dist/img/logo/50kota.png" type="image/x-icon">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="keywords" content="operasi, pendaftaran, pasien, rsud, 50kota, achmad darwis" />
+    <meta name="description" content="Halaman Login Pendaftaran Operasi RSUD Achmad Darwis" />
+    <meta name="author" content="Febri Ramandha, S.Kom" />
+    <meta name="programmers" content="Febri Ramandha, S.Kom" />
+    <meta name="company" content="Febri Ramandha, S.Kom" />
+    <meta name="powered_by" content="Febri Ramandha, S.Kom" />
+    <meta name="regency" content="Kabupaten 50 Kota" />
 
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
     <link rel="stylesheet" href="<?= base_url('assets/AdminLTE/'); ?>plugins/fontawesome-free/css/all.min.css">
@@ -22,7 +30,6 @@
 
     <!-- SweetAlert -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-
     <style>
         .initial {
             align-items: center;
@@ -56,12 +63,36 @@
                 <!-- Notifications Dropdown Menu -->
                 <li class="nav-item dropdown">
                     <a class="nav-link" data-toggle="dropdown" href="#">
+                        <i class="far fa-bell"></i>
+                        <span class="badge badge-danger navbar-badge">15</span>
+                    </a>
+                    <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
+                        <span class="dropdown-item dropdown-header">15 Notifikasi</span>
+                        <div class="dropdown-divider"></div>
+                        <a href="#" class="dropdown-item">
+                            <i class="fas fa-envelope mr-2"></i> 4 new messages
+                            <span class="float-right text-muted text-sm">3 mins</span>
+                        </a>
+                        <div class="dropdown-divider"></div>
+                        <a href="#" class="dropdown-item">
+                            <i class="fas fa-users mr-2"></i> 8 friend requests
+                            <span class="float-right text-muted text-sm">12 hours</span>
+                        </a>
+                        <div class="dropdown-divider"></div>
+                        <a href="#" class="dropdown-item dropdown-footer">Semua Notifikasi</a>
+                    </div>
+                </li>
+                <!-- Profil -->
+                <li class="nav-item dropdown">
+                    <a class="nav-link" data-toggle="dropdown" href="#">
                         <img data-name="<?= $this->fungsi->user_login()->full_name; ?>" class="profile initial" />
                         <span class="text-uppercase font-weight-bold"><?= $this->fungsi->user_login()->full_name; ?></span>
                         <i class="fas fa-angle-down"></i>
                     </a>
                     <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right p-2" style="min-width: 200px;">
                         <div class="text-center">
+                            <span class="dropdown-item dropdown-header"><?= str_level($this->fungsi->user_login()->level); ?></span>
+                            <div class="dropdown-divider"></div>
                             <a href="<?= site_url('profil'); ?>" class="nav-link">
                                 <p class="text-center black"><i class="fas fa-user"></i> Profil Saya</p>
                             </a>
@@ -79,15 +110,15 @@
             <!-- Brand Logo -->
             <a href="<?= site_url(''); ?>" class="brand-link navbar-white navbar-light">
                 <div class="image">
-                    <img src="<?= base_url('assets/AdminLTE/'); ?>dist/img/logo/icon-sisbangkom.png" alt="Sisbangkom Logo" class="brand-image">
-                    <span class="brand-text font-weight-bold">SISBANGKOM</span>
+                    <img src="<?= base_url('assets/AdminLTE/'); ?>dist/img/logo/50kota.png" alt="50 Kota Logo" class="brand-image">
+                    <span class="brand-text font-weight-bold">Pendaftaran Operasi</span>
                 </div>
             </a>
 
             <!-- Sidebar -->
             <div class="sidebar">
                 <!-- Sidebar Menu -->
-                <nav class="mt-2">
+                <nav class="mt-2 mb-5">
                     <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
                         <li class="nav-header">MAIN NAVIGATION</li>
                         <?php foreach (sidebar_dinamis() as $menu_side) :
@@ -95,12 +126,20 @@
                             $lv = pg_to_array($menu_side->level);
                             if (in_array($lv_user, $lv) == TRUE && !empty($menu_side->title)) {
                                 $submenu = $this->db->get_where('new_acl', ['parent' => $menu_side->id]);
+
+                                $submenu_active = false;
+                                foreach ($submenu->result() as $sub) {
+                                    if ($this->uri->segment(1) == $sub->url || $this->uri->segment(2) == $sub->controller) {
+                                        $submenu_active = true;
+                                        break;
+                                    }
+                                }
                         ?>
                                 <!-- Tampilkan Main Menu -->
-                                <li class="nav-item">
-                                    <a href="<?= site_url($menu_side->url); ?>" class="nav-link <?= $this->uri->segment(1) == $menu_side->url || $this->uri->segment(1) == '' ? 'active' : ''; ?>">
+                                <li class="nav-item <?= $submenu_active ? 'menu-open' : ''; ?>" id="atas">
+                                    <a href="<?= site_url($menu_side->url); ?>" class="nav-link <?= $this->uri->segment(1) == $menu_side->url || $this->uri->segment(1) == '' ? 'active' : ''; ?> <?= $submenu_active ? 'text-primary' : ''; ?>">
                                         <i class="nav-icon fas <?= $menu_side->icon; ?>"></i>
-                                        <p><?= $menu_side->title; ?></p>
+                                        <p><?= $menu_side->title; ?> </p>
                                         <?php
                                         if ($menu_side->child == 1) {
                                             echo "<i class='fas fa-angle-right right'></i>";
@@ -116,7 +155,7 @@
                                             foreach ($submenu->result() as $sub) :
                                             ?>
                                                 <li class="nav-item">
-                                                    <a href="<?= site_url($sub->url); ?>" class="nav-link <?= $this->uri->segment(1) == $sub->url ? 'active' : ''; ?>">
+                                                    <a href="<?= site_url($sub->url); ?>" class="nav-link <?= $this->uri->segment(1) == $sub->url || $this->uri->segment(2) == $sub->controller ? 'active' : ''; ?>">
                                                         <i class='far fa-circle nav-icon'></i>
                                                         <p><?= $sub->title; ?></p>
                                                     </a>
@@ -163,7 +202,7 @@
         <!-- /.content-wrapper -->
 
         <footer class="main-footer text-center">
-            <strong>Copyright &copy; <?= date('Y'); ?> | Dinas Komunikasi dan Informatika Kabupaten Agam.</strong>
+            <strong>Copyright &copy; <?= date('Y'); ?> | Ns. Melly Elya Yeriza, S.Kep.</strong>
         </footer>
 
     </div>
@@ -196,27 +235,8 @@
     <script src="<?= base_url('assets/AdminLTE/'); ?>plugins/datatables-buttons/js/buttons.html5.min.js"></script>
     <script src="<?= base_url('assets/AdminLTE/'); ?>plugins/datatables-buttons/js/buttons.print.min.js"></script>
     <script src="<?= base_url('assets/AdminLTE/'); ?>plugins/datatables-buttons/js/buttons.colVis.min.js"></script>
+    <script src="<?= base_url('assets/AdminLTE/'); ?>dist/js/custom.js"></script>
     <script>
-        $(document).ready(function() {
-            $('#table1').DataTable({
-                language: {
-                    url: "//cdn.datatables.net/plug-ins/1.10.24/i18n/Indonesian.json"
-                },
-            })
-        });
-
-        $(function() {
-            $('select').each(function() {
-                $(this).select2({
-                    theme: 'bootstrap4',
-                    width: $(this).data('width') ? $(this).data('width') : $(this).hasClass('w-100') ? '100%' : 'style',
-                    placeholder: $(this).data('placeholder'),
-                    allowClear: Boolean($(this).data('allow-clear')),
-                    closeOnSelect: !$(this).attr('multiple'),
-                });
-            });
-        });
-
         document.getElementById("logout").addEventListener("click", function() {
             Swal.fire({
                 title: 'Apakah Kamu Yakin?',
@@ -232,11 +252,6 @@
                     window.location.href = '<?php echo base_url('auth/logout'); ?>';
                 }
             })
-        });
-
-        // Avatar Initial
-        $(document).ready(function() {
-            $('.profile').initial();
         });
     </script>
 </body>

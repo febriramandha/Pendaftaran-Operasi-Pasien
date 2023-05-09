@@ -1,32 +1,13 @@
-<section class="content-header">
-    <div class="container-fluid">
-        <div class="row mb-2">
-            <div class="col-sm-6">
-                <h1>User
-                    <small>Pengguna</small>
-                </h1>
-            </div>
-            <div class="col-sm-6">
-                <ol class="breadcrumb float-sm-right">
-                    <li class="breadcrumb-item"><a href="#"><i class="nav-icon fas fa-tachometer-alt"></i></a></li>
-                    <li class="breadcrumb-item active">User</li>
-                </ol>
-            </div>
-        </div>
-    </div>
-</section>
-
-<!-- Main content -->
 <section class="content">
 
     <?php $this->view('messages'); ?>
 
     <div class="card">
         <div class="card-header">
-            <h3 class="card-title">Data Users</h3>
+            <h3 class="card-title">Data User</h3>
             <div class="card-tools">
                 <a href="<?= site_url('user/add'); ?>" class="btn btn-primary">
-                    <i class="fas fa-user-plus"></i> Create User
+                    <i class="fas fa-user-plus"></i> Tambah User
                 </a>
             </div>
         </div>
@@ -36,12 +17,12 @@
                     <thead>
                         <tr>
                             <th style="width: 10px">#</th>
-                            <th>Username</th>
-                            <th>Name</th>
-                            <!-- <th>Address</th> -->
+                            <th>Username/Nip</th>
+                            <th>Nama User</th>
+                            <th>OPD</th>
                             <th>Level</th>
                             <th>Status</th>
-                            <th>Action</th>
+                            <th>Aksi</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -52,16 +33,23 @@
                                 <td><?= $no++; ?>.</td>
                                 <td><?= $data->nip; ?></td>
                                 <td><?= $data->full_name; ?></td>
-                                <!-- <td><?= $data->address; ?></td> -->
+                                <td><?= $data->nama_unor; ?></td>
                                 <td><?= str_level($data->level); ?></td>
-                                <td><?= str_status($data->status); ?></td>
+                                <td><?= str_status($data->status_user); ?></td>
                                 <td class="text-center" width="160px">
-                                    <a href="<?= site_url('user/edit/' . $data->id); ?>" class="btn btn-warning btn-xs">
-                                        <i class="fas fa-pen"></i> Edit
+
+                                    <a href="<?= site_url('user/edit/' . $data->userid); ?>" class="text-warning pr-3" title="Edit">
+                                        <i class="fas fa-pen"></i>
                                     </a>
-                                    <a href="<?= site_url('user/delete/' . $data->id); ?>" class="btn btn-danger btn-xs" onclick="return confirm('Apakah Anda yakin ingin hapus?')">
-                                        <i class="fas fa-trash"></i> Hapus
+
+                                    <a href="#" class="text-danger pr-3" title="Hapus" onclick="hapusData('<?= $data->userid; ?>')">
+                                        <i class="fas fa-trash"></i>
                                     </a>
+
+                                    <a href="#" class="text-danger pr-3" title="Hapus" onclick="ubahStatus('<?= $data->userid; ?>')">
+                                        <span class="text-success" title="Non Aktifkan" style="font-size: 20px;"><i class="aktif fas fa-toggle-on"></i></span>
+                                    </a>
+
                                 </td>
                             </tr>
                         <?php } ?>
@@ -71,3 +59,38 @@
         </div>
     </div>
 </section>
+
+<script>
+    function hapusData(id) {
+        Swal.fire({
+            text: "Yakin ingin menghapus data ini?",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            cancelButtonText: 'Tidak',
+            confirmButtonText: 'Ya, Hapus'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                window.location.href = "<?= base_url('user/delete/'); ?>" + id
+            }
+        })
+    }
+
+
+    function ubahStatus(id) {
+        Swal.fire({
+            text: "Yakin ingin ubah status user?",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            cancelButtonText: 'Tidak',
+            confirmButtonText: 'Ya, Ubah'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                window.location.href = "<?= base_url('user/status/'); ?>" + id
+            }
+        })
+    }
+</script>

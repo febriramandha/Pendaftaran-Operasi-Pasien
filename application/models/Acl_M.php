@@ -17,4 +17,10 @@ class Acl_M extends CI_Model
         $query = $this->db->get();
         return $query;
     }
+
+    public function get_menu_by_parent($parent_id = 0)
+    {
+        $query = $this->db->get_where('new_acl', array('parent' => $parent_id));
+        return $query->result();
+    }
 }

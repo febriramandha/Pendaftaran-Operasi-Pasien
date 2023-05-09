@@ -8,9 +8,9 @@ class User extends CI_Controller
         parent::__construct();
         check_not_login();
         check_admin();
-        $this->load->model('user_m');
+        $this->load->model(['user_m', 'unor_m']);
         $this->load->library('form_validation');
-        $this->title = "Users";
+        $this->title = "User";
     }
 
     public function index()
@@ -25,10 +25,17 @@ class User extends CI_Controller
 
     public function add()
     {
+        $unor = $this->unor_m->get()->result();
+
         $user = new stdClass();
-        $user->address = null;
+        $user->userid = null;
+        $user->name = null;
+        $user->username = null;
+        $user->unor_id = null;
+        $user->level = null;
         $data = [
             'page' => 'add',
+            'unor' => $unor,
             'row' => $user
         ];
         $this->template->load('template', 'user/user_form_add', $data);
@@ -39,27 +46,32 @@ class User extends CI_Controller
         $post = $this->input->post(null, TRUE);
         if (isset($_POST['add'])) {
             $this->user_m->add($post);
-        } else if (isset($_POST['edit'])) {
-            $this->user_m->edit($post);
+            if ($this->db->affected_rows() > 0) {
+                $this->session->set_flashdata('pesan', 'Data Berhasil Disimpan...');
+            } else {
+                $error = "Gagal Insert Data!";
+                $this->session->set_flashdata('error', $error);
+            }
+            redirect('user');
         }
-
-        if ($this->db->affected_rows() > 0) {
-            $this->session->set_flashdata('pesan', 'Data Berhasil Disimpan...');
-        }
-        redirect('user');
     }
 
     public function delete($id)
     {
         $this->user_m->del($id);
         if ($this->db->affected_rows() > 0) {
-            echo "<script> alert('Data Berhasil Dihapus...'); </script>";
+            $this->session->set_flashdata('pesan', 'Data Berhasil Dihapus...');
+        } else {
+            $error = "Gagal Menghapus Data!";
+            $this->session->set_flashdata('error', $error);
         }
-        echo "<script> window.location='" . site_url('user') . "'; </script>";
+        redirect('user');
     }
 
     public function edit($id)
     {
+        $unor = $this->unor_m->get()->result();
+
         $this->form_validation->set_rules('fullname', 'Nama', 'required');
         $this->form_validation->set_rules(
             'username',
@@ -93,18 +105,22 @@ class User extends CI_Controller
             $query = $this->user_m->get($id);
             if ($query->num_rows() > 0) {
                 $data['row'] = $query->row();
+                $data['unor'] = $unor;
                 $this->template->load('template', 'user/user_form_edit', $data);
             } else {
-                echo "<script> alert('Data Tidak Ditemukan...');";
-                echo "window.location='" . site_url('user') . "'; </script>";
+                echo alert_login('error', 'Oops...', 'Data Tidak Ditemukan!', 'user');
             }
         } else {
             $post = $this->input->post(null, TRUE);
             $this->user_m->edit($post);
+
             if ($this->db->affected_rows() > 0) {
-                echo "<script> alert('Data Berhasil Diubah...'); </script>";
+                $this->session->set_flashdata('pesan', 'Data Berhasil Diubah...');
+            } else {
+                $error = "Gagal Insert Data!";
+                $this->session->set_flashdata('error', $error);
             }
-            echo "<script> window.location='" . site_url('user') . "'; </script>";
+            redirect('user');
         }
     }
 
@@ -118,5 +134,17 @@ class User extends CI_Controller
         } else {
             return TRUE;
         }
+    }
+
+    public function status($id)
+    {
+        $this->user_m->status($id);
+        if ($this->db->affected_rows() > 0) {
+            $this->session->set_flashdata('pesan', 'Status Berhasil Diubah...');
+        } else {
+            $error = "Gagal Mengubah Status!";
+            $this->session->set_flashdata('error', $error);
+        }
+        redirect('user');
     }
 }

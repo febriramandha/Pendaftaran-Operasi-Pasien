@@ -108,11 +108,11 @@ function str_level($level)
     $a = '';
 
     if ($level == '1') {
-        $a = 'Super User';
+        $a = 'Super Admin';
     } else if ($level == '2') {
-        $a = 'Admin';
+        $a = 'Petugas OPD';
     } else if ($level == '3') {
-        $a = 'Petugas';
+        $a = 'Verifikator';
     } else {
         $a = 'Pegawai';
     }
@@ -154,11 +154,6 @@ function sidebar_dinamis()
     $ci = &get_instance();
     $ci->load->model('acl_m');
     $menu = $ci->acl_m->getAcl()->result();
-    // Belum Selesai
-    // foreach ($menu as $side) {
-    //     $side_menu = $ci->acl_m->getParent($side->parent);
-    //     $side->parent = $side_menu;
-    // }
 
     return $menu;
 }
@@ -238,5 +233,51 @@ if (!function_exists('instansi_icon_datatables')) {
         }
 
         return $result;
+    }
+
+    if (!function_exists('status_perkawinan')) {
+        function status_perkawinan($id)
+        {
+            switch ($id) {
+                case 1:
+                    $return = 'Belum Menikah';
+                    break;
+                case 2:
+                    $return = 'Menikah';
+                    break;
+                case 3:
+                    $return = 'Cerai Hidup';
+                    break;
+                case 4:
+                    $return = 'Cerai Mati';
+                    break;
+                default:
+                    $return = 'Tidak Diketahui';
+                    break;
+            }
+
+            return $return;
+        }
+    }
+
+    if (!function_exists('get_hash')) {
+
+        function get_hash($PlainPassword)
+        {
+
+            $option = [
+                'cost' => 12, // proses hash sebanyak: 2^12 = 4.096x
+            ];
+            return password_hash($PlainPassword, PASSWORD_DEFAULT, $option);
+        }
+    }
+
+    if (!function_exists('hash_verified')) {
+
+        function hash_verified($PlainPassword, $HashPassword)
+        {
+
+            return password_verify($PlainPassword, $HashPassword) ? true : false;
+        }
     }
 }

@@ -1,7 +1,7 @@
 <?php
 defined('BASEPATH') or exit('No direct script access allowed');
 
-class Migration_Tb_acl extends CI_Migration
+class Migration_Tb_users extends CI_Migration
 {
     public function up()
     {
@@ -11,58 +11,55 @@ class Migration_Tb_acl extends CI_Migration
                 'unsigned' => TRUE,
                 'auto_increment' => TRUE
             ),
-            'controller' => array(
+            'username' => array(
                 'type' => 'VARCHAR',
                 'constraint' => '100',
                 'default' => null,
             ),
-            'url' => array(
-                'type' => 'VARCHAR',
-                'constraint' => '100',
+            'password' => array(
+                'type' => 'TEXT',
                 'default' => null,
             ),
-            'type' => array(
+            'full_name' => array(
                 'type' => 'VARCHAR',
-                'constraint' => '100',
+                'constraint' => '255',
                 'default' => null,
             ),
             'level' => array(
                 'type' => 'INT',
                 'default' => null,
             ),
-            'title' => array(
-                'type' => 'VARCHAR',
-                'constraint' => '100',
+            'created_at' => array(
+                'type' => 'TIMESTAMP',
+                'constraint' => '6',
                 'default' => null,
             ),
-            'icon' => array(
-                'type' => 'VARCHAR',
-                'constraint' => '100',
-                'default' => null,
-            ),
-            'parent' => array(
+            'created_by' => array(
                 'type' => 'INT4',
+                'constraint' => '32',
                 'default' => null,
             ),
-            'position' => array(
+            'updated_at' => array(
+                'type' => 'TIMESTAMP',
+                'constraint' => '6',
+                'default' => null,
+            ),
+            'updated_by' => array(
                 'type' => 'INT4',
+                'constraint' => '32',
                 'default' => null,
             ),
             'status' => array(
                 'type' => 'INT4',
                 'default' => '1',
             ),
-            'child' => array(
-                'type' => 'INT4',
-                'default' => null,
-            ),
         ));
         $this->dbforge->add_key('id', TRUE);
-        $this->dbforge->create_table('new_acl');
+        $this->dbforge->create_table('users');
     }
 
     public function down()
     {
-        $this->dbforge->drop_table('new_acl');
+        $this->dbforge->drop_table('users');
     }
 }

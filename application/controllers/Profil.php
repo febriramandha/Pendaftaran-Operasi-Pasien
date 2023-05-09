@@ -9,13 +9,13 @@ class Profil extends CI_Controller
 		parent::__construct();
 		check_not_login();
 		$this->title = "Profil Saya";
-		$this->load->model(['pegawai_m']);
+		$this->load->model(['pegawai_m', 'user_m']);
 	}
 
 	public function index()
 	{
-		$data['profil'] = $this->pegawai_m->getProfil()->row();
-		$data['golongan'] = $this->pegawai_m->getGolPeg()->row();
+		$peg_id = $this->fungsi->user_login()->id;
+		$data['profil'] = $this->user_m->get($peg_id)->row();
 		$this->template->load('template', 'profil/index', $data);
 	}
 }
