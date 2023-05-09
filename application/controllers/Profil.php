@@ -9,7 +9,7 @@ class Profil extends CI_Controller
 		parent::__construct();
 		check_not_login();
 		$this->title = "Profil Saya";
-		$this->load->model(['pegawai_m', 'user_m']);
+		$this->load->model(['user_m']);
 	}
 
 	public function index()
