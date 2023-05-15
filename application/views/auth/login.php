@@ -32,30 +32,31 @@
 	}
 </style>
 
-<body class="login-page bglogin">
+<body class="hold-transition login-page bglogin">
 	<div class="container">
 		<div class="row mt-5">
-			<div class="col-md-8 text-left mt-3 mb-5">
-				<p class="text-uppercase font-weight-bold text-monospace h5">Selamat Datang Di</p>
+			<div class="col-sm-8  pl-2 pr-2">
+				<h5 class="text-uppercase font-weight-bold text-monospace">Selamat Datang Di</h5>
 				<h1 class="hero-4-title"><b>Aplikasi Pendaftaran Pasien Operasi</h1>
 				<p class="text-muted h5">RSUD dr. ACHMAD DARWIS</p>
 			</div>
-
-			<div class="col-md-4 mb-5">
-				<div class="login-box">
-					<div class="card">
-						<div class="card-body login-card-body">
-							<h3 class="login-box-msg">Halaman Login</h3>
-							<form action="<?= site_url('auth/proses'); ?>" method="post">
+			<div class="col-sm-8">
+				<div class="card" style="width: 20rem;">
+					<div class="card-body">
+						<h3 class="text-center mb-3">Halaman Login</h3>
+						<form action="<?= site_url('auth/proses'); ?>" method="post">
+							<div class="form-group">
 								<label for="username">Username</label>
 								<div class="input-group mb-3">
 									<input type="text" name="username" class="form-control" placeholder="Masukkan Username" required autocomplete="off" autofocus>
 									<div class="input-group-append">
-										<div class="input-group-text">
+										<span class="input-group-text" id="basic-addon2">
 											<span class="fas fa-user"></span>
-										</div>
+										</span>
 									</div>
 								</div>
+							</div>
+							<div class="form-group">
 								<label for="password">Kata Sandi</label>
 								<div class="input-group mb-3">
 									<input type="password" name="password" id="password" class="form-control" placeholder="Masukkan Kata Sandi" required>
@@ -63,15 +64,15 @@
 										<span id="check" class="btn input-group-text"><i class="fa fa-eye"></i></span>
 									</div>
 								</div>
-								<div class="row">
-									<button type="submit" name="login" class="btn btn-primary btn-block"><i class="fa fa-sign-in-alt"></i> Masuk</button>
-								</div>
-							</form>
+							</div>
 
-						</div>
+							<div class="row">
+								<button type="submit" name="login" class="btn btn-primary btn-block"><i class="fa fa-sign-in-alt"></i> Masuk</button>
+							</div>
+						</form>
 					</div>
-
 				</div>
+
 			</div>
 		</div>
 	</div>

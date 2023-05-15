@@ -12,11 +12,11 @@ class Auth extends CI_Controller
 
     public function proses()
     {
-        $this->load->model('user_m');
+        $this->load->model('User_M');
         $post = $this->input->post(null, TRUE);
         $pass = $this->input->post('password', TRUE);
 
-        $cek  = $this->user_m->loginPg($post);
+        $cek  = $this->User_M->loginPg($post);
 
         if ($cek->num_rows() > 0) {
             // kita ambil isi dari record

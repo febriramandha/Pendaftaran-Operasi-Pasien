@@ -11,7 +11,7 @@
         <div class="card-body">
             <div class="alert" style="background-color: #dcedfc;" role="alert">
                 <span><i class="fas fa-info-circle"></i></span> Informasi <br>
-                <p>Password di generate secara otomatis oleh sistem yaitu <b>sisbangkom_pass</b></p>
+                <p>Password di generate secara otomatis oleh sistem yaitu <b>rsud_pass</b></p>
             </div>
             <div class="row">
                 <div class="col-md-4">
@@ -27,22 +27,12 @@
                                 <?= form_error('username'); ?>
                             </div>
                             <div class="form-group">
-                                <label>Instansi *</label>
-                                <select class="form-control" name="unor" id="unor">
-                                    <option value="">Pilih Instansi</option>
-                                    <?php foreach ($unor as $opd => $data) { ?>
-                                        <option value="<?= $data->id; ?>"><?= $data->nama_unor; ?></option>
-                                    <?php } ?>
-                                </select>
-                                <?= form_error('level'); ?>
-                            </div>
-                            <div class="form-group">
                                 <label>Level *</label>
                                 <select class="form-control" name="level" id="level">
-                                    <option value="">- Pilih -</option>
+                                    <option selected disabled>- Pilih Level -</option>
                                     <option value="1" <?= set_value('level') == 1 ? "selected" : null; ?>>Super Admin</option>
-                                    <option value="2" <?= set_value('level') == 2 ? "selected" : null; ?>>Petugas OPD</option>
-                                    <option value="3" <?= set_value('level') == 3 ? "selected" : null; ?>>Varifikator</option>
+                                    <option value="2" <?= set_value('level') == 2 ? "selected" : null; ?>>Petugas OK</option>
+                                    <option value="3" <?= set_value('level') == 3 ? "selected" : null; ?>>Petugas Ruangan</option>
                                 </select>
                                 <?= form_error('level'); ?>
                             </div>

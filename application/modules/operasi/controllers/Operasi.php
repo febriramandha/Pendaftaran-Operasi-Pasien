@@ -1,24 +1,20 @@
 <?php
 defined('BASEPATH') or exit('No direct script access allowed');
 
-class Pendaftaran extends CI_Controller
+class Operasi extends CI_Controller
 {
 
     function __construct()
     {
         parent::__construct();
         check_not_login();
-        $segment = $this->uri->segment(1);
-        akses_menu($segment);
         $this->load->model(['Pendaftaran_Operasi_M']);
-        $this->title = "Pendaftaran Operasi Pasien";
+        $this->title = "Proses Operasi Pasien";
         $this->load->library('form_validation');
     }
 
     public function index()
     {
-        // $data['row'] = "Test";
-        // $data['row'] = $this->Pendaftaran_Operasi_M->get();
         $this->template->load('template', 'v_index');
     }
 
@@ -250,27 +246,27 @@ class Pendaftaran extends CI_Controller
         }
     }
 
-    public function delete($id)
-    {
-        $this->Pendaftaran_Operasi_M->del($id);
-        if ($this->db->affected_rows() > 0) {
-            $this->session->set_flashdata('pesan', 'Data Berhasil Dihapus...');
-        } else {
-            $error = "Gagal Menghapus Data!";
-            $this->session->set_flashdata('error', $error);
-        }
-        redirect('pendaftaran');
-    }
+    // public function delete($id)
+    // {
+    //     $this->Pendaftaran_Operasi_M->del($id);
+    //     if ($this->db->affected_rows() > 0) {
+    //         $this->session->set_flashdata('pesan', 'Data Berhasil Dihapus...');
+    //     } else {
+    //         $error = "Gagal Menghapus Data!";
+    //         $this->session->set_flashdata('error', $error);
+    //     }
+    //     redirect('pendaftaran');
+    // }
 
-    public function status($id)
-    {
-        $this->Pendaftaran_Operasi_M->status($id);
-        if ($this->db->affected_rows() > 0) {
-            $this->session->set_flashdata('pesan', 'Status Berhasil Diubah...');
-        } else {
-            $error = "Gagal Mengubah Status!";
-            $this->session->set_flashdata('error', $error);
-        }
-        redirect('pendaftaran');
-    }
+    // public function status($id)
+    // {
+    //     $this->Pendaftaran_Operasi_M->status($id);
+    //     if ($this->db->affected_rows() > 0) {
+    //         $this->session->set_flashdata('pesan', 'Status Berhasil Diubah...');
+    //     } else {
+    //         $error = "Gagal Mengubah Status!";
+    //         $this->session->set_flashdata('error', $error);
+    //     }
+    //     redirect('pendaftaran');
+    // }
 }

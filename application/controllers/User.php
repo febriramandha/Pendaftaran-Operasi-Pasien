@@ -8,7 +8,7 @@ class User extends CI_Controller
         parent::__construct();
         check_not_login();
         check_admin();
-        $this->load->model(['user_m', 'unor_m']);
+        $this->load->model(['User_M']);
         $this->load->library('form_validation');
         $this->title = "User";
     }
@@ -18,24 +18,20 @@ class User extends CI_Controller
         check_not_login();
         check_admin();
 
-        $data['row'] = $this->user_m->get();
+        $data['row'] = $this->User_M->get();
 
         $this->template->load('template', 'user/user_data', $data);
     }
 
     public function add()
     {
-        $unor = $this->unor_m->get()->result();
-
         $user = new stdClass();
-        $user->userid = null;
-        $user->name = null;
+        $user->id = null;
+        $user->full_name = null;
         $user->username = null;
-        $user->unor_id = null;
         $user->level = null;
         $data = [
             'page' => 'add',
-            'unor' => $unor,
             'row' => $user
         ];
         $this->template->load('template', 'user/user_form_add', $data);
@@ -45,7 +41,7 @@ class User extends CI_Controller
     {
         $post = $this->input->post(null, TRUE);
         if (isset($_POST['add'])) {
-            $this->user_m->add($post);
+            $this->User_M->add($post);
             if ($this->db->affected_rows() > 0) {
                 $this->session->set_flashdata('pesan', 'Data Berhasil Disimpan...');
             } else {
@@ -58,7 +54,7 @@ class User extends CI_Controller
 
     public function delete($id)
     {
-        $this->user_m->del($id);
+        $this->User_M->del($id);
         if ($this->db->affected_rows() > 0) {
             $this->session->set_flashdata('pesan', 'Data Berhasil Dihapus...');
         } else {
@@ -70,8 +66,6 @@ class User extends CI_Controller
 
     public function edit($id)
     {
-        $unor = $this->unor_m->get()->result();
-
         $this->form_validation->set_rules('fullname', 'Nama', 'required');
         $this->form_validation->set_rules(
             'username',
@@ -102,17 +96,16 @@ class User extends CI_Controller
         $this->form_validation->set_message('min_length', '%s minimal 5 karakter!');
 
         if ($this->form_validation->run() == FALSE) {
-            $query = $this->user_m->get($id);
+            $query = $this->User_M->get($id);
             if ($query->num_rows() > 0) {
                 $data['row'] = $query->row();
-                $data['unor'] = $unor;
                 $this->template->load('template', 'user/user_form_edit', $data);
             } else {
                 echo alert_login('error', 'Oops...', 'Data Tidak Ditemukan!', 'user');
             }
         } else {
             $post = $this->input->post(null, TRUE);
-            $this->user_m->edit($post);
+            $this->User_M->edit($post);
 
             if ($this->db->affected_rows() > 0) {
                 $this->session->set_flashdata('pesan', 'Data Berhasil Diubah...');
@@ -127,7 +120,7 @@ class User extends CI_Controller
     function username_check()
     {
         $post = $this->input->post(null, TRUE);
-        $query = $this->db->query("SELECT * FROM users WHERE nip='$post[username]' AND id != '$post[user_id]'");
+        $query = $this->db->query("SELECT * FROM users WHERE username='$post[username]' AND id != '$post[user_id]'");
         if ($query->num_rows() > 0) {
             $this->form_validation->set_message('username_check', '%s ini sudah digunakan, silahkan ganti!');
             return FALSE;
@@ -138,7 +131,7 @@ class User extends CI_Controller
 
     public function status($id)
     {
-        $this->user_m->status($id);
+        $this->User_M->status($id);
         if ($this->db->affected_rows() > 0) {
             $this->session->set_flashdata('pesan', 'Status Berhasil Diubah...');
         } else {

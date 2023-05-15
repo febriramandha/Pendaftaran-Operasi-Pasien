@@ -29,7 +29,7 @@ class User_M extends CI_Model
     {
         $params = [
             'username' => $post['username'],
-            'password' => get_hash('sisbangkom_pass'),
+            'password' => get_hash('rsud_pass'),
             'full_name' => $post['name'],
             'level' => $post['level'],
             'created_at' => date('Y-m-d H:i:s'),
@@ -43,7 +43,7 @@ class User_M extends CI_Model
     {
         $params['username'] = $post['username'];
         if (!empty($post['password'])) {
-            $params['password'] = sha1($post['password']);
+            $params['password'] = get_hash($post['password']);
         }
         $params['full_name'] = $post['fullname'];
         $params['level'] = $post['level'];

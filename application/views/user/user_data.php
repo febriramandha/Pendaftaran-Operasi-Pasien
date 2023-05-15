@@ -17,9 +17,8 @@
                     <thead>
                         <tr>
                             <th style="width: 10px">#</th>
-                            <th>Username/Nip</th>
+                            <th>Username</th>
                             <th>Nama User</th>
-                            <th>OPD</th>
                             <th>Level</th>
                             <th>Status</th>
                             <th>Aksi</th>
@@ -31,22 +30,21 @@
                         foreach ($row->result() as $key => $data) { ?>
                             <tr>
                                 <td><?= $no++; ?>.</td>
-                                <td><?= $data->nip; ?></td>
+                                <td><?= $data->username; ?></td>
                                 <td><?= $data->full_name; ?></td>
-                                <td><?= $data->nama_unor; ?></td>
                                 <td><?= str_level($data->level); ?></td>
-                                <td><?= str_status($data->status_user); ?></td>
+                                <td><?= str_status($data->status); ?></td>
                                 <td class="text-center" width="160px">
 
-                                    <a href="<?= site_url('user/edit/' . $data->userid); ?>" class="text-warning pr-3" title="Edit">
+                                    <a href="<?= site_url('user/edit/' . $data->id); ?>" class="text-warning pr-3" title="Edit">
                                         <i class="fas fa-pen"></i>
                                     </a>
 
-                                    <a href="#" class="text-danger pr-3" title="Hapus" onclick="hapusData('<?= $data->userid; ?>')">
+                                    <a href="#" class="text-danger pr-3" title="Hapus" onclick="hapusData('<?= $data->id; ?>')">
                                         <i class="fas fa-trash"></i>
                                     </a>
 
-                                    <a href="#" class="text-danger pr-3" title="Hapus" onclick="ubahStatus('<?= $data->userid; ?>')">
+                                    <a href="#" class="text-danger pr-3" title="Hapus" onclick="ubahStatus('<?= $data->id; ?>')">
                                         <span class="text-success" title="Non Aktifkan" style="font-size: 20px;"><i class="aktif fas fa-toggle-on"></i></span>
                                     </a>
 
