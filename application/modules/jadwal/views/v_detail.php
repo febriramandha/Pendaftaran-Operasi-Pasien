@@ -112,6 +112,41 @@
                 </div>
 
             </div>
+
+            <?php if ($row->status == 3) { ?>
+                <div class="card-body table-responsive p-0">
+                    <table class="table table-bordered table-hover text-nowrap table-head-fixed" id="table-operasi">
+                        <thead>
+                            <tr>
+                                <th>Lama Waktu Tunggu</th>
+                                <th>Jam Operasi Sign In</th>
+                                <th>Jam Operasi Time Out</th>
+                                <th>Jam Operasi Sign Out</th>
+                                <th>Petugas OK</th>
+                                <th>Rencana Rawat</th>
+                                <th>Implan</th>
+                                <th>Status Pasien OK</th>
+                                <th>Keterangan</th>
+                                <th>Created At</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="text-center"><?= $operasi->wkt_tunggu; ?></td>
+                                <td class="text-center"><?= date('H:i', strtotime($operasi->jam_sign_in)); ?></td>
+                                <td class="text-center"><?= date('H:i', strtotime($operasi->jam_time_out)); ?></td>
+                                <td class="text-center"><?= date('H:i', strtotime($operasi->jam_sign_out)); ?></td>
+                                <td><?= $operasi->petugas_ok; ?></td>
+                                <td><?= $operasi->rencana_rawat; ?></td>
+                                <td><?= $operasi->implan; ?></td>
+                                <td class="text-center"><?= status_ok($operasi->status_pasien_ok); ?></td>
+                                <td><?= $operasi->ket; ?></td>
+                                <td class="text-center"><?= $operasi->created_at; ?></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            <?php } ?>
         </div>
     </div>
 </section>

@@ -9,7 +9,10 @@ class Pendaftaran extends CI_Controller
         parent::__construct();
         check_not_login();
         $segment = $this->uri->segment(1);
-        akses_menu($segment);
+        $lv_user = $this->fungsi->user_login()->level;
+        if ($lv_user == 2) {
+            akses_menu($segment);
+        }
         $this->load->model(['Pendaftaran_Operasi_M']);
         $this->title = "Pendaftaran Operasi Pasien";
         $this->load->library('form_validation');

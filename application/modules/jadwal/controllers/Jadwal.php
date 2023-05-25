@@ -9,8 +9,11 @@ class Jadwal extends CI_Controller
         parent::__construct();
         check_not_login();
         $segment = $this->uri->segment(1);
-        akses_menu($segment);
-        $this->load->model(['Pendaftaran_Operasi_M']);
+        $lv_user = $this->fungsi->user_login()->level;
+        if ($lv_user == 3) {
+            akses_menu($segment);
+        }
+        $this->load->model(['Pendaftaran_Operasi_M', 'Operasi_M']);
         $this->title = "Jadwal Operasi Pasien";
         $this->load->library('form_validation');
     }
@@ -24,6 +27,7 @@ class Jadwal extends CI_Controller
     public function detail($id)
     {
         $data['row'] = $this->Pendaftaran_Operasi_M->get($id)->row();
+        $data['operasi'] = $this->Operasi_M->get($id)->row();
         $this->template->load('template', 'v_detail', $data);
     }
 
@@ -43,6 +47,6 @@ class Jadwal extends CI_Controller
             $error = "Gagal Terima Pasien!";
             $this->session->set_flashdata('error', $error);
         }
-        redirect('operasi');
+        redirect('operasi/form/' . $id);
     }
 }

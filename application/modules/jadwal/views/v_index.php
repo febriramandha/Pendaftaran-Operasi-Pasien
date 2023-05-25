@@ -27,6 +27,7 @@
                                 <th>Nama Pasien</th>
                                 <th>No Rekam Medis</th>
                                 <th>Tanggal Operasi</th>
+                                <th>Jam Rencana Operasi</th>
                                 <th>Diagnosa</th>
                                 <th>Status</th>
                                 <th>Aksi</th>
@@ -41,6 +42,15 @@
                                     <td><?= $data->nama_pasien; ?></td>
                                     <td><?= $data->no_mr; ?></td>
                                     <td><?= indo_date($data->tgl_operasi); ?></td>
+                                    <td>
+                                        <?php
+                                        if ($data->jam_rencana_tindakan == null) {
+                                            echo "-";
+                                        } else {
+                                            echo date('H:i', strtotime($data->jam_rencana_tindakan)) . " WIB";
+                                        }
+                                        ?>
+                                    </td>
                                     <td><?= $data->diagnosa; ?></td>
                                     <td class="text-center"><?= status_operasi($data->status); ?></td>
                                     <td class="text-center">
@@ -52,7 +62,11 @@
                                             <a href="#" class="btn btn-success btn-xs" title="Lihat Detail" onclick="ubahStatus('<?= $data->id; ?>')">
                                                 <i class="fas fa-check"></i> Terima
                                             </a>
-                                        <?php } ?>
+                                        <?php } elseif ($data->status == 2) { ?>
+                                            <a href="<?= base_url('operasi/form/' . $data->id); ?>" class="btn btn-warning btn-xs" title="Isi Form">
+                                                <i class="fas fa-pen"></i> Form OK
+                                            </a>
+                                        <?php }  ?>
                                     </td>
                                 </tr>
                             <?php } ?>

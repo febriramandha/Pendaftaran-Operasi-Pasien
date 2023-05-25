@@ -12,30 +12,32 @@
 				</a>
 			</div>
 		</div>
-		<div class="row mb-3">
-			<div class="col-md-4 col-sm-6 col-xs-12">
-				<div class="small-box bg-white">
-					<div class="inner">
-						<h3 class="counter">23</h3>
-						<p>Total Pegawai</p>
-					</div>
-					<div class="icon">
-						<i class="fas fa-user-friends text-primary"></i>
-					</div>
-				</div>
-			</div>
-			<div class="col-md-4 col-sm-6 col-xs-12">
-				<div class="small-box bg-white">
-					<div class="inner">
-						<h3 class="counter">45</h3>
-						<p>Total Pasien</p>
-					</div>
-					<div class="icon">
-						<i class="fas fa-procedures text-success"></i>
+
+		<?php if ($lv_user == 1 || $lv_user == 2) { ?>
+			<div class="row mb-3">
+				<div class="col-md-4 col-sm-6 col-xs-12">
+					<div class="small-box bg-white">
+						<div class="inner">
+							<h3 class="counter"><?= $total_pegawai->total; ?></h3>
+							<p>Total Pegawai</p>
+						</div>
+						<div class="icon">
+							<i class="fas fa-user-friends text-primary"></i>
+						</div>
 					</div>
 				</div>
-			</div>
-			<div class="col-md-4 col-sm-6 col-xs-12">
+				<div class="col-md-4 col-sm-6 col-xs-12">
+					<div class="small-box bg-white">
+						<div class="inner">
+							<h3 class="counter"><?= $total_pasien->total; ?></h3>
+							<p>Total Pasien</p>
+						</div>
+						<div class="icon">
+							<i class="fas fa-procedures text-success"></i>
+						</div>
+					</div>
+				</div>
+				<!-- <div class="col-md-4 col-sm-6 col-xs-12">
 				<div class="small-box bg-white">
 					<div class="inner">
 						<h3 class="counter">546</h3>
@@ -45,9 +47,9 @@
 						<i class="fas fa-user-md text-danger"></i>
 					</div>
 				</div>
+			</div> -->
 			</div>
-
-		</div>
+		<?php } ?>
 
 	</div>
 </section>

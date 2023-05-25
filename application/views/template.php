@@ -47,6 +47,7 @@
 </head>
 
 <body class="hold-transition sidebar-mini layout-fixed layout-navbar-fixed layout-footer-fixed <?= $this->uri->segment(1) == 'sale' ? 'sidebar-collapse' : null; ?>">
+    <?php $lv_user = $this->fungsi->user_login()->level; ?>
     <!-- Site wrapper -->
     <div class="wrapper">
         <!-- Navbar -->
@@ -121,55 +122,58 @@
                 <nav class="mt-2 mb-5">
                     <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
                         <li class="nav-header">MAIN NAVIGATION</li>
-                        <?php foreach (sidebar_dinamis() as $menu_side) :
-                            $lv_user = $this->fungsi->user_login()->level;
-                            $lv = pg_to_array($menu_side->level);
-                            if (in_array($lv_user, $lv) == TRUE && !empty($menu_side->title)) {
-                                $submenu = $this->db->get_where('new_acl', ['parent' => $menu_side->id]);
+                        <li class="nav-item">
+                            <a href="<?= site_url('dashboard') ?>" class="nav-link <?= $this->uri->segment(1) == 'dashboard' || $this->uri->segment(1) == '' ? 'active' : ''; ?>">
+                                <i class="nav-icon fas fa-home"></i>
+                                <p>Dashboard</p>
+                            </a>
+                        </li>
 
-                                $submenu_active = false;
-                                foreach ($submenu->result() as $sub) {
-                                    if ($this->uri->segment(1) == $sub->url || $this->uri->segment(2) == $sub->controller) {
-                                        $submenu_active = true;
-                                        break;
-                                    }
-                                }
-                        ?>
-                                <!-- Tampilkan Main Menu -->
-                                <li class="nav-item <?= $submenu_active ? 'menu-open' : ''; ?>" id="atas">
-                                    <a href="<?= site_url($menu_side->url); ?>" class="nav-link <?= $this->uri->segment(1) == $menu_side->url || $this->uri->segment(1) == '' ? 'active' : ''; ?> <?= $submenu_active ? 'text-primary' : ''; ?>">
-                                        <i class="nav-icon fas <?= $menu_side->icon; ?>"></i>
-                                        <p><?= $menu_side->title; ?> </p>
-                                        <?php
-                                        if ($menu_side->child == 1) {
-                                            echo "<i class='fas fa-angle-right right'></i>";
-                                        }
-                                        ?>
-                                    </a>
-                                    <?php
-                                    if ($submenu->num_rows() > 0) {
-                                    ?>
-                                        <!-- Tampilkan Submenu -->
-                                        <ul class="nav nav-treeview">
-                                            <?php
-                                            foreach ($submenu->result() as $sub) :
-                                            ?>
-                                                <li class="nav-item">
-                                                    <a href="<?= site_url($sub->url); ?>" class="nav-link <?= $this->uri->segment(1) == $sub->url || $this->uri->segment(2) == $sub->controller ? 'active' : ''; ?>">
-                                                        <i class='far fa-circle nav-icon'></i>
-                                                        <p><?= $sub->title; ?></p>
-                                                    </a>
-                                                </li>
-                                        <?php
-                                            endforeach;
-                                            echo "</ul>";
-                                        }
-                                        ?>
-                                </li>
                         <?php
-                            }
-                        endforeach;
-                        ?>
+                        if ($lv_user == 1 || $lv_user == 3) { ?>
+                            <li class="nav-item">
+                                <a href="<?= site_url('pendaftaran') ?>" class="nav-link <?= $this->uri->segment(1) == 'pendaftaran' || $this->uri->segment(1) == '' ? 'active' : ''; ?>">
+                                    <i class="nav-icon fas fa-hospital-user"></i>
+                                    <p>Pendaftaran Operasi</p>
+                                </a>
+                            </li>
+                        <?php } ?>
+
+                        <?php if ($lv_user == 1 || $lv_user == 2) { ?>
+                            <li class="nav-item">
+                                <a href="<?= site_url('jadwal') ?>" class="nav-link <?= $this->uri->segment(1) == 'jadwal' || $this->uri->segment(1) == '' ? 'active' : ''; ?>">
+                                    <i class="nav-icon fas fa-calendar-alt"></i>
+                                    <p>Jadwal Operasi</p>
+                                </a>
+                            </li>
+
+
+                            <li class="nav-item <?= $this->uri->segment(1) == 'laporan' || $this->uri->segment(1) == 'kabko' ? 'menu-open' : ''; ?>">
+                                <a href="#" class="nav-link <?= $this->uri->segment(1) == 'laporan' || $this->uri->segment(1) == '' ? 'text-primary' : ''; ?>">
+                                    <i class="nav-icon fas fa-print"></i>
+                                    <p>Laporan <i class="fas fa-angle-right right"></i></p>
+                                </a>
+                                <ul class="nav nav-treeview">
+                                    <li class="nav-item">
+                                        <a href="<?= site_url('/'); ?>" class="nav-link <?= $this->uri->segment(1) == 'laporan' ? 'active' : ''; ?>">
+                                            <i class="far fa-circle nav-icon"></i>
+                                            <p>Pasien Operasi</p>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
+                        <?php } ?>
+
+                        <?php
+                        if ($lv_user == 1) { ?>
+                            <li class="nav-header">SETTING</li>
+                            <li class="nav-item">
+                                <a href="<?= site_url('user'); ?>" class="nav-link <?= $this->uri->segment(1) == 'user' ? 'active' : ''; ?>">
+                                    <i class="nav-icon fas fa-users"></i>
+                                    <p>Users</p>
+                                </a>
+                            </li>
+                        <?php } ?>
 
                     </ul>
                 </nav>

@@ -22,19 +22,22 @@ class Auth extends CI_Controller
             // kita ambil isi dari record
             $hasil = $cek->row();
             if (password_verify($pass, $hasil->password)) {
-                $params = array(
-                    'userid' => $hasil->id,
-                    'level' => $hasil->level
-                );
+                if ($hasil->status == 1) {
+                    $params = array(
+                        'userid' => $hasil->id,
+                        'level' => $hasil->level
+                    );
 
-                $this->session->set_userdata($params);
+                    $this->session->set_userdata($params);
 
-                echo alert_login(
-                    'success',
-                    'Selamat...',
-                    'Anda Berhasil Login!',
-                    'dashboard'
-                );
+                    $data['icon'] = 'success';
+                    $data['judul_alert'] = 'Selamat...';
+                    $data['text_alert'] = 'Anda Berhasil Login!';
+                    $data['url'] = 'dashboard';
+                    $this->load->view('auth/alert', $data);
+                } else {
+                    echo alert_login('error', 'Oops...', 'Maaf Login Gagal, User Tidak Aktif!', '/');
+                }
             } else {
                 echo alert_login('error', 'Oops...', 'Maaf Login Gagal, password Salah!', '/');
             }
@@ -48,7 +51,11 @@ class Auth extends CI_Controller
         $params = ['userid', 'level'];
         $this->session->unset_userdata($params);
 
-        echo alert_login('success', 'Terima Kasih...', 'Anda Berhasil Keluar Aplikasi!', '/');
+        $data['icon'] = 'success';
+        $data['judul_alert'] = 'Terima Kasih...';
+        $data['text_alert'] = 'Anda Berhasil Keluar Aplikasi!';
+        $data['url'] = '/';
+        $this->load->view('auth/alert', $data);
     }
 
     public function blocked()

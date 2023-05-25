@@ -70,4 +70,13 @@ class User_M extends CI_Model
         $this->db->where('id', $id);
         $this->db->update('users', $params);
     }
+
+    public function totPegawai()
+    {
+        $this->db->select('COUNT(id) as total');
+        $this->db->from('users');
+        $this->db->where('status', '1');
+        $query = $this->db->get_where()->row();
+        return $query;
+    }
 }

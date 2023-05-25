@@ -22,6 +22,7 @@ class Pendaftaran_Operasi_M extends CI_Model
     {
         $params = [
             'tgl_operasi' => $post['tgl_operasi'],
+            'jam_rencana_tindakan' => $post['jam_rencana_tindakan'],
             'nama_pasien' => $post['nama_pasien'],
             'no_mr' => $post['no_mr'],
             'tgl_lahir' => $post['tgl_lahir'],
@@ -67,5 +68,13 @@ class Pendaftaran_Operasi_M extends CI_Model
         ];
         $this->db->where('id', $id);
         $this->db->update($this->table, $params);
+    }
+
+    public function totPasien()
+    {
+        $this->db->select('COUNT(id) as total');
+        $this->db->from($this->table);
+        $query = $this->db->get_where()->row();
+        return $query;
     }
 }

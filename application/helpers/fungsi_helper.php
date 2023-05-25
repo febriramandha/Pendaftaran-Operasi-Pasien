@@ -150,6 +150,19 @@ function status_operasi($status)
     return $a;
 }
 
+function status_ok($status)
+{
+    $a = '';
+
+    if ($status == '1') {
+        $a = '<span class="badge badge-pill badge-danger font-size-14">Pasien Batal</span>';
+    } else {
+        $a = '<span class="badge badge-pill badge-success font-size-14">Penjadwalan Prioritas Tindakan</span>';
+    }
+
+    return $a;
+}
+
 function gelar_nama($gelar_depan, $nama_pegawai, $gelar_blkng)
 {
     $dpn = '';
@@ -197,117 +210,79 @@ if (!function_exists('array_to_pg')) {
     }
 }
 
-if (!function_exists('users_icon_datatables')) {
-    function users_icon_datatables($nama_pegawai, $nip)
+function jenis_kel($jekel)
+{
+    if ($jekel == '1') {
+        $result = 'Laki-laki';
+    } else {
+        $result = 'Perempuan';
+    }
+
+    return $result;
+}
+
+function j_pembayaran($j_pembayaran)
+{
+    if ($j_pembayaran == '1') {
+        $result = 'BPJS';
+    } elseif ($j_pembayaran == '2') {
+        $result = 'UMUM';
+    } else {
+        $result = 'JAMPERSAL';
+    }
+
+    return $result;
+}
+
+if (!function_exists('status_perkawinan')) {
+    function status_perkawinan($id)
     {
-        $result = '
-            <div class="media">
-                <span class="fa-stack fa-lg mr-1" style="margin-right: 6px;">
-                    <i class="far fa-circle fa-stack-2x text-primary"></i>
-                    <i class="fas fa-user fa-stack-1x text-primary"></i>
-                </span>
-                <div class="media-body">
-                    <div>
-                        <p class="mb-0">' . $nama_pegawai . '</p>
-                    </div>
-                    <span class=" font-13">
-                        <b class="cst_bold">NIP: </b>
-                        <span class="badge bg-pill bg-primary font-size-12">' . $nip . '</span>
-                    </span>
-                </div>
-            </div>
-            ';
-        return $result;
+        switch ($id) {
+            case 1:
+                $return = 'Belum Menikah';
+                break;
+            case 2:
+                $return = 'Menikah';
+                break;
+            case 3:
+                $return = 'Cerai Hidup';
+                break;
+            case 4:
+                $return = 'Cerai Mati';
+                break;
+            default:
+                $return = 'Tidak Diketahui';
+                break;
+        }
+
+        return $return;
     }
 }
 
-if (!function_exists('instansi_icon_datatables')) {
-    function instansi_icon_datatables($unor, $jabatan)
+if (!function_exists('get_hash')) {
+
+    function get_hash($PlainPassword)
     {
-        $result = '
-            <div class="media">
-                <span class="fa-stack fa-lg mr-1" style="margin-right: 6px;">
-                    <i class="far fa-circle fa-stack-2x text-success"></i>
-                    <i class="fas fa-building fa-stack-1x text-success"></i>
-                </span>
-                <div class="media-body">
-                    <div>
-                        <p class="mb-0">' . $unor . '</p>
-                    </div>
-                        <span class="font-size-12">' . $jabatan . '</span>
-                </div>
-            </div>
-            ';
-        return $result;
-    }
 
-    function jenis_kel($jekel)
+        $option = [
+            'cost' => 12, // proses hash sebanyak: 2^12 = 4.096x
+        ];
+        return password_hash($PlainPassword, PASSWORD_DEFAULT, $option);
+    }
+}
+
+if (!function_exists('hash_verified')) {
+
+    function hash_verified($PlainPassword, $HashPassword)
     {
-        if ($jekel == '1') {
-            $result = 'Laki-laki';
-        } else {
-            $result = 'Perempuan';
-        }
 
-        return $result;
+        return password_verify($PlainPassword, $HashPassword) ? true : false;
     }
+}
 
-    function j_pembayaran($j_pembayaran)
+if (!function_exists('label_required')) {
+    function label_required($id = null)
     {
-        if ($j_pembayaran == '1') {
-            $result = 'BPJS';
-        } elseif ($j_pembayaran == '2') {
-            $result = 'UMUM';
-        } else {
-            $result = 'JAMPERSAL';
-        }
-
-        return $result;
-    }
-
-    if (!function_exists('status_perkawinan')) {
-        function status_perkawinan($id)
-        {
-            switch ($id) {
-                case 1:
-                    $return = 'Belum Menikah';
-                    break;
-                case 2:
-                    $return = 'Menikah';
-                    break;
-                case 3:
-                    $return = 'Cerai Hidup';
-                    break;
-                case 4:
-                    $return = 'Cerai Mati';
-                    break;
-                default:
-                    $return = 'Tidak Diketahui';
-                    break;
-            }
-
-            return $return;
-        }
-    }
-
-    if (!function_exists('get_hash')) {
-
-        function get_hash($PlainPassword)
-        {
-
-            $option = [
-                'cost' => 12, // proses hash sebanyak: 2^12 = 4.096x
-            ];
-            return password_hash($PlainPassword, PASSWORD_DEFAULT, $option);
-        }
-    }
-
-    if (!function_exists('hash_verified')) {
-
-        function hash_verified($PlainPassword, $HashPassword)
-        {
-
-            return password_verify($PlainPassword, $HashPassword) ? true : false;
-        }
+        return '<span id="' . $id . '" class="text-danger">*</span>';
     }
 }
